@@ -91,7 +91,8 @@ class App extends Component {
 			method: 'POST',
 			body: JSON.stringify(this.state.insertar),
 			headers: {
-				Authorization: `Bearer ${token}`,
+				"Content-type": "application/json; charset=UTF-8",
+				Authorization: `Bearer ${token}`
 			}
 		}).then(respuesta => {
 			return respuesta.json()
@@ -124,11 +125,11 @@ class App extends Component {
 							<Modal isOpen={this.state.abrirInsertar} toggle={this.modal2.bind(this)} style={{ boxShadow: '0 12px 15px 0 #0000003d, 0 17px 50px 0 #00000030' }}>
 								<ModalHeader toggle={this.modalOpen2} style={{ backgroundColor: '#CC5EF5', color: 'white' }}>Insertar</ModalHeader>
 								<ModalBody>
-									<Input type='text' name='nombre' onChange={this.onChangeInsertar}/>
-									<hr/>
-									<Input type='text' name='apellido' onChange={this.onChangeInsertar}/>
-									<hr/>
-									<Input type='text' name='edad' onChange={this.onChangeInsertar}/>
+									<Input type='text' name='nombre' onChange={this.onChangeInsertar} />
+									<hr />
+									<Input type='text' name='apellido' onChange={this.onChangeInsertar} />
+									<hr />
+									<Input type='text' name='edad' onChange={this.onChangeInsertar} />
 								</ModalBody>
 								<ModalFooter>
 									<Button outline color="info" onClick={this.peticionInsertar.bind(this)}>Insertar!</Button>{' '}
@@ -157,10 +158,10 @@ class App extends Component {
 												<Button outline color='success' onClick={this.login}>Ingresar</Button>
 											</td>
 											<td>
-												<Button outline color='warning' onClick={this.modal.bind(this)}>Solicitar</Button>
+												<Button outline color='info' onClick={this.modal2.bind(this)}>Insertar</Button>
 											</td>
 											<td>
-												<Button outline color='info' onClick={this.modal2.bind(this)}>Insertar</Button>
+												<Button outline color='warning' onClick={this.modal.bind(this)}>Solicitar</Button>
 											</td>
 										</tr>
 									</tbody>

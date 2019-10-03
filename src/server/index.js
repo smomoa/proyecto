@@ -11,7 +11,7 @@ app.use(bodyParser.json({ limit: '10mb' }))
 app.use(cors());
 
 app.get('/', (req, res) => {
-	res.status(200).send({respuesta:'conectado'})
+	res.status(200).send({ respuesta: 'conectado' })
 })
 
 app.post('/login', (req, res) => {
@@ -25,7 +25,7 @@ app.post('/login', (req, res) => {
 		database: 'prueba'
 	});
 
-	var query = connection.query('SELECT * FROM login WHERE password = ?', password, function (error, result) {
+	connection.query('SELECT * FROM login WHERE password = ?', password, function (error, result) {
 		if (error) {
 			throw error;
 		} else {
@@ -77,7 +77,7 @@ app.get('/lista', (req, res) => {
 				database: 'prueba'
 			});
 
-			var query = connection.query('SELECT * FROM usuarios', function (error, rows) {
+			connection.query('SELECT * FROM usuarios', function (error, rows) {
 				if (error) {
 					throw error;
 				} else {
@@ -120,11 +120,11 @@ app.post('/insertar', (req, res) => {
 				database: 'prueba'
 			});
 
-			var query = connection.query('INSERT INTO usuarios (nombre, apellido, edad) VALUES ?', [cuerpo], function (error, result) {
+			connection.query('INSERT INTO usuarios (nombre, apellido, edad) VALUES ?', [cuerpo], function (error, result) {
 				if (error) {
 					throw error;
 				} else {
-					res.status(200).send({ respuesta: result.affectedRows})
+					res.status(200).send({ respuesta: result.affectedRows + ' Fila Afectada' })
 				}
 			});
 			connection.end();
