@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, FormGroup, Input, Label, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Col, FormGroup, Input, Label, Button, Modal, ModalBody, ModalFooter, ModalHeader, Table, Card, CardBody, CardHeader } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
@@ -11,7 +11,7 @@ class App extends Component {
 			respuesta: {},
 			abrir: false,
 			abrirInsertar: false,
-			lista: {},
+			lista: [],
 			insertar: {},
 			respuestaInsertar: {}
 		};
@@ -78,7 +78,7 @@ class App extends Component {
 			return respuesta.json()
 		}).then(json => {
 			this.setState({
-				lista: json,
+				lista: json.respuesta,
 				abrir: false
 			})
 		})
@@ -102,6 +102,19 @@ class App extends Component {
 				abrirInsertar: false
 			})
 		})
+		this.peticion()
+	}
+
+	eliminar = async (id_usuarios) => {
+		let usuarioDatos = JSON.parse(localStorage.getItem('Datos'))
+		let token = usuarioDatos.token
+		await fetch(`http://localhost:4000/eliminar?id_usuarios=${id_usuarios}`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		})
+		this.peticion()
 	}
 
 	render() {
@@ -168,6 +181,31 @@ class App extends Component {
 								</table>
 							</FormGroup>
 						</Col>
+							<Card>
+								<CardHeader style={{ color: 'black' }}>Lista de Usuarios</CardHeader>
+								<CardBody>
+									<Table hover bordered striped responsive>
+										<thead>
+											<tr>
+												<th>Nombre</th>
+												<th>Apellido</th>
+												<th>Edad</th>
+												<th>Eliminar</th>
+											</tr>
+										</thead>
+										<tbody>
+											{this.state.lista.map((usuarios, index) => (
+												<tr>
+													<td key={index}>{usuarios.nombre}</td>
+													<td key={index}>{usuarios.apellido}</td>
+													<td key={index}>{usuarios.edad}</td>
+													<td key={index}><Button outline color='danger' onClick={this.eliminar.bind(this, usuarios.id_usuarios)}>Eliminar</Button></td>
+												</tr>
+											))}
+										</tbody>
+									</Table>
+								</CardBody>
+							</Card>
 					</div>
 				</header>
 			</div>

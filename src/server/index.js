@@ -132,4 +132,42 @@ app.post('/insertar', (req, res) => {
 	})
 })
 
+app.delete('/eliminar', (req, res) => {
+	var id_usuarios = req.query.id_usuarios
+	var token = req.headers['authorization']
+
+	if (!token) {
+		res.status(401).send({
+			error: "Es necesario el token de autenticación"
+		})
+		return
+	}
+
+	token = token.replace('Bearer ', '')
+
+	jwt.verify(token, 'Diplodocus', function (err, user) {
+		if (err) {
+			res.status(401).send({
+				error: 'Token inválido'
+			})
+		} else {
+			var connection = mysql.createConnection({
+				host: 'localhost',
+				user: 'root',
+				password: '',
+				database: 'prueba'
+			});
+
+			connection.query('DELETE FROM usuarios WHERE id_usuarios = ?', id_usuarios, function (error, result) {
+				if (error) {
+					throw error;
+				} else {
+					res.status(200).send({ respuesta: result.affectedRows + ' Fila Afectada' })
+				}
+			});
+			connection.end();
+		}
+	})
+})
+
 app.listen(4000, () => console.log('Servidor esta activo en puerto 4000 xD'));
